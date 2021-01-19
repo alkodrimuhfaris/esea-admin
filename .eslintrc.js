@@ -37,6 +37,7 @@ module.exports = {
     'react/prop-types': 'off',
     'no-plusplus': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/jsx-one-expression-per-line': 'off',
     // 'react-hooks/exhaustive-deps': 'off',
   },
 };
