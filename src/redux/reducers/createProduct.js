@@ -12,14 +12,16 @@ export default (state = initialState, action) => {
     }
     case 'CREATE_PRODUCT_PENDING': {
       return {
+        ...state,
         success: false,
         error: false,
         pending: true,
-        message: 'Creting new produt ...',
+        message: 'Creting new product ...',
       };
     }
     case 'CREATE_PRODUCT_REJECTED': {
       return {
+        ...state,
         success: false,
         error: true,
         pending: false,
@@ -28,10 +30,17 @@ export default (state = initialState, action) => {
     }
     case 'CREATE_PRODUCT_FULFILLED': {
       return {
+        ...state,
         success: true,
         error: false,
         pending: false,
         message: 'Success create new product',
+      };
+    }
+    case 'CLEAR_CREATE_MESSAGE': {
+      return {
+        ...state,
+        ...initialState,
       };
     }
   }

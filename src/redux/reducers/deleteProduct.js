@@ -3,7 +3,6 @@ const initialState = {
   error: false,
   pending: false,
   message: '',
-  data: {},
 };
 
 export default (state = initialState, action) => {
@@ -11,16 +10,16 @@ export default (state = initialState, action) => {
     default: {
       return state;
     }
-    case 'GET_PRODUCT_DETAILS_PENDING': {
+    case 'DELETE_PRODUCT_PENDING': {
       return {
         ...state,
         success: false,
         error: false,
         pending: true,
-        message: 'Getting product details ...',
+        message: 'Deleting product...',
       };
     }
-    case 'GET_PRODUCT_DETAILS_REJECTED': {
+    case 'DELETE_PRODUCT_REJECTED': {
       return {
         ...state,
         success: false,
@@ -29,14 +28,19 @@ export default (state = initialState, action) => {
         message: action.payload.response.data.message,
       };
     }
-    case 'GET_PRODUCT_DETAILS_FULFILLED': {
+    case 'DELETE_PRODUCT_FULFILLED': {
       return {
         ...state,
         success: true,
         error: false,
         pending: false,
-        message: 'Success get data',
-        data: action.payload.data.results,
+        message: 'Success delete product',
+      };
+    }
+    case 'CLEAR_DELETE_MESSAGE': {
+      return {
+        ...state,
+        ...initialState,
       };
     }
   }

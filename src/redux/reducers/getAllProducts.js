@@ -14,6 +14,7 @@ export default (state = initialState, action) => {
     }
     case 'GET_ALL_PRODUCTS_PENDING': {
       return {
+        ...state,
         success: false,
         error: false,
         pending: true,
@@ -22,6 +23,7 @@ export default (state = initialState, action) => {
     }
     case 'GET_ALL_PRODUCTS_REJECTED': {
       return {
+        ...state,
         success: false,
         error: true,
         pending: false,
@@ -30,6 +32,7 @@ export default (state = initialState, action) => {
     }
     case 'GET_ALL_PRODUCTS_FULFILLED': {
       return {
+        ...state,
         success: true,
         error: false,
         pending: false,
