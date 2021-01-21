@@ -1,25 +1,137 @@
-import logo from './logo.svg';
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+import React from 'react';
+import {BrowserRouter, Redirect, Switch, Route} from 'react-router-dom';
+import {Provider, connect} from 'react-redux';
+import {Helmet} from 'react-helmet';
+import PrivateRoute from './Components/Auth/PrivateRoute';
+import Admin from './Components/Admin/Admin';
+import Login from './Components/Auth/Login';
+import Signup from './Components/Auth/SignUp';
+import Home from './Components/Home/Home';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import authAction from './redux/actions/auth';
+// Import store
+import store from './redux/store';
+
+class App extends React.Component {
+  componentDidMount() {
+    if (localStorage.getItem('token')) {
+      if (!this.props.auth.isLogin) {
+        const credential = {
+          token: localStorage.getItem('token'),
+        };
+        this.props.setToken(credential);
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    if (localStorage.getItem('token')) {
+      if (!this.props.auth.isLogin) {
+        const credential = {
+          token: localStorage.getItem('token'),
+        };
+        this.props.setToken(credential);
+      }
+    }
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>
+            Tuku! Shopping online with trusted seller! Shopping? Nengdi Wae!
+          </title>
+        </Helmet>
+        <BrowserRouter>
+          <Switch>
+            <Route
+              path="/"
+              render={(props) => (
+                <>
+                  <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Home Admin || Tuku!</title>
+                  </Helmet>
+                  <Home {...props} />
+                </>
+              )}
+              exact
+            />
+            <PrivateRoute path="/admin">
+              <>
+                <Helmet>
+                  <meta charSet="utf-8" />
+                  <title>Admin || Tuku!</title>
+                </Helmet>
+                <Admin />
+              </>
+            </PrivateRoute>
+            <PrivateRoute path="/product">
+              <>
+                <Helmet>
+                  <meta charSet="utf-8" />
+                  <title>Admin || Tuku!</title>
+                </Helmet>
+                <Admin />
+              </>
+            </PrivateRoute>
+            <PrivateRoute path="/registration">
+              <>
+                <Helmet>
+                  <meta charSet="utf-8" />
+                  <title>Admin || Tuku!</title>
+                </Helmet>
+                <Admin />
+              </>
+            </PrivateRoute>
+            <Route
+              path="/login"
+              render={(props) => (
+                <>
+                  <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Login || Tuku!</title>
+                  </Helmet>
+                  <Login {...props} />
+                </>
+              )}
+              exact
+            />
+            <Route
+              path="/signup"
+              render={(props) => (
+                <>
+                  <Helmet>
+                    <meta charSet="utf-8" />
+                    <title>Sign Up || Tuku!</title>
+                  </Helmet>
+                  <Signup {...props} />
+                </>
+              )}
+              exact
+            />
+          </Switch>
+        </BrowserRouter>
+      </Provider>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  token: state.auth.token,
+});
+
+const mapDispatchToProps = {
+  setToken: authAction.setToken,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// export default App
