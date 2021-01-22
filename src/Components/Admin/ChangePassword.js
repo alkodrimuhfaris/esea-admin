@@ -3,7 +3,7 @@ import {
   Input,
   Col,
   Button,
-  Form,
+  Row,
   FormGroup,
   FormFeedback,
   Label,
@@ -90,7 +90,7 @@ export default function ChangePassword({md}) {
             handleBlur,
           } = props;
           return (
-            <Form onSubmit={handleSubmit} className="montserrat">
+            <Row form onSubmit={handleSubmit} className="montserrat no-gutters">
               <Col xs="12" md="8" className="mb-3">
                 <FormGroup row>
                   <Label
@@ -212,7 +212,7 @@ export default function ChangePassword({md}) {
 
                 <ModalConfirm modalOpen={openNotifPass} {...propsNotifPass} />
               </Col>
-            </Form>
+            </Row>
           );
         }}
       </Formik>

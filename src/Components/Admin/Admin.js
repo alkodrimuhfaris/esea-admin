@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Container, Col, Row, Media, Nav, NavItem} from 'reactstrap';
+import {Col, Row, Media, Nav, NavItem} from 'reactstrap';
 import {Link, useHistory, useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {FaPencilAlt, FaRegClipboard} from 'react-icons/fa';
@@ -157,7 +157,7 @@ export default function Profile() {
     <>
       <NavBar />
       <Row
-        className={sm ? 'no-gutters' : ''}
+        className={`kumbh-sans ${sm ? 'no-gutters' : ''}`}
         style={{width: '100%', margin: '0'}}
       >
         <Col
@@ -256,14 +256,14 @@ export default function Profile() {
           className={sm ? '' : 'p-5'}
         >
           <div
-            className={`w-100 h-100 overflow-auto ${sm ? 'py-4 px-3' : 'p-5'}`}
+            className={`w-100 h-100 overflow-auto ${sm ? 'py-4 px-1' : 'p-5'}`}
             style={{backgroundColor: '#fff'}}
           >
-            <div className="border-bottom pb-3">
+            <div className={`border-bottom pb-3 ${sm ? 'px-4' : ''}`}>
               <div className="h4">{heading.title()}</div>
               <div className="text-muted small">{heading.subTitle()}</div>
             </div>
-            <Container>{component()}</Container>
+            <div>{component()}</div>
           </div>
         </Col>
       </Row>

@@ -78,6 +78,12 @@
   margin-bottom: 1em;
 }
 
+.label-form {
+  font-size: 0.8em;
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+}
+
 .img-center {
   position: absolute;
   top: 50%;
@@ -279,4 +285,25 @@
 .home-container {
   width: 100%;
   height: 100vh;
+}
+
+.absolute-centering {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.square-1p5-em-padding {
+  width: 2em;
+  height: 2em;
+}
+
+.button-modal-close {
+  padding: 0;
+  top: 10px;
+  right: 10px;
+  width: 2em;
+  height: 2em;
+  border-radius: 4em;
 }

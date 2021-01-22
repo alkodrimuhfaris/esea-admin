@@ -9,6 +9,7 @@ import {
   FormGroup,
   FormFeedback,
   Label,
+  Container,
 } from 'reactstrap';
 import {useSelector, useDispatch} from 'react-redux';
 import * as Yup from 'yup';
@@ -170,7 +171,7 @@ export default function Profile() {
   };
 
   return (
-    <>
+    <Container>
       <Formik
         enableReinitialize
         initialValues={initialValue}
@@ -374,6 +375,6 @@ export default function Profile() {
         }}
       </Formik>
       <ChangePassword md={md} />
-    </>
+    </Container>
   );
 }

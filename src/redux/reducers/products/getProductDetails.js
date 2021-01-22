@@ -39,5 +39,11 @@ export default (state = initialState, action) => {
         data: action.payload.data.results,
       };
     }
+    case 'CLEAR_PRODUCT_DETAILS': {
+      return {
+        ...state,
+        ...initialState,
+      };
+    }
   }
 };

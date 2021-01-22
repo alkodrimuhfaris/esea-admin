@@ -50,7 +50,8 @@ class App extends React.Component {
         </Helmet>
         <BrowserRouter>
           <Switch>
-            <Route
+            <Redirect from="/" to="/admin" exact />
+            {/* <Route
               path="/"
               render={(props) => (
                 <>
@@ -62,7 +63,7 @@ class App extends React.Component {
                 </>
               )}
               exact
-            />
+            /> */}
             <PrivateRoute path="/admin">
               <>
                 <Helmet>

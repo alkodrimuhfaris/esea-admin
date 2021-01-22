@@ -2,152 +2,27 @@ import React from 'react';
 import {Pagination, PaginationItem, PaginationLink, Input} from 'reactstrap';
 import Select from 'react-select';
 import qs from 'qs';
-import {useSelector, useDispatch} from 'react-redux';
-import {useHistory, useLocation} from 'react-router-dom';
-import actions from '../../redux/actions/index';
+import {useHistory} from 'react-router-dom';
 import useWindowDimension from '../../Helpers/useWindowDimension';
 
-export default function PaginationHook({adminPage = false}) {
+export default function PaginationHook({
+  query,
+  pageInfo,
+  editQuery = (qry) => console.log(qry),
+  dispatchSearchQuery = (qry) => console.log(qry),
+  backendExtension,
+}) {
   const {sm} = useWindowDimension();
-  const dispatch = useDispatch();
-  const {
-    itemsActions: itemsAction,
-    adminActions: adminAction,
-    searchQueryActions: queryAction,
-    transactionActions: transactionAction,
-  } = actions;
   const history = useHistory();
-  const queryAdmin = useSelector((state) => state.admin.query);
-  const querySearch = useSelector((state) => state.searchQuery.query);
-  const pageInfoAdmin = useSelector((state) => state.admin.pageInfo);
-  const pageInfoTransaction = useSelector(
-    (state) => state.allTransaction.pageInfo,
-  );
-  const pageInfoSearch = useSelector((state) => state.items.searchPageInfo);
-  const token = useSelector((state) => state.auth.token);
-  const [pageInfo, setPageInfo] = React.useState({});
-  const [limit, setLimit] = React.useState(10);
-  const [extension, setExtension] = React.useState('/public/products?');
   const [optionPage, setOptionPage] = React.useState([]);
-  const [query, setQuery] = React.useState(
-    adminPage ? queryAdmin : querySearch,
-  );
-  const thisPath = useLocation().pathname;
-  const isInitialMount1 = React.useRef(true);
-  const isInitialMount2 = React.useRef(true);
-  // const isInitialMount3 = React.useRef(true);
-
-  React.useEffect(() => {
-    if (adminPage) {
-      setQuery(queryAdmin);
-    } else {
-      setQuery(querySearch);
-    }
-  }, [queryAdmin, querySearch]);
-
-  const searchPage = (queryPage) => {
-    switch (thisPath) {
-      case '/admin': {
-        dispatch(adminAction.addQuery(queryPage));
-        break;
-      }
-      case '/search': {
-        dispatch(queryAction.addQuery(queryPage));
-        break;
-      }
-      case '/transaction': {
-        dispatch(queryAction.addQuery(queryPage));
-        break;
-      }
-      default: {
-        dispatch(queryAction.addQuery(queryPage));
-        break;
-      }
-    }
-  };
+  const [limit, setLimit] = React.useState(10);
+  const isInitialMount = React.useRef(true);
+  // const isInitialMount2 = React.useRef(true);
 
   const dispatchSearch = () => {
-    switch (thisPath) {
-      case '/admin': {
-        dispatch(adminAction.getAdminItems(token, query));
-        break;
-      }
-      case '/search': {
-        dispatch(itemsAction.searchItem(query));
-        break;
-      }
-      case '/transaction': {
-        console.log('dispatch transaction action');
-        dispatch(transactionAction.getAllTransaction(token, query));
-        break;
-      }
-      default: {
-        dispatch(itemsAction.searchItem(query));
-        break;
-      }
-    }
+    dispatchSearchQuery(query);
     history.push({search: qs.stringify(query)});
   };
-
-  React.useEffect(() => {
-    if (isInitialMount1.current) {
-      isInitialMount1.current = false;
-      console.log(adminPage);
-      let ext = '';
-      switch (thisPath) {
-        case '/admin': {
-          ext = '/items?';
-          break;
-        }
-        case '/search': {
-          ext = '/public/products?';
-          break;
-        }
-        case '/transaction': {
-          ext = '/transaction/all?';
-          break;
-        }
-        default: {
-          ext = '/public/products?';
-          break;
-        }
-      }
-      setExtension(ext);
-    } else {
-      dispatchSearch();
-    }
-    return () => dispatch(queryAction.clearQuery());
-  }, []);
-
-  React.useEffect(() => {
-    switch (thisPath) {
-      case '/admin': {
-        setPageInfo(pageInfoAdmin);
-        break;
-      }
-      case '/search': {
-        setPageInfo(pageInfoSearch);
-        break;
-      }
-      case '/transaction': {
-        console.log(pageInfoTransaction);
-        setPageInfo(pageInfoTransaction);
-        break;
-      }
-      default: {
-        setPageInfo(pageInfoAdmin);
-        break;
-      }
-    }
-  }, [pageInfoAdmin, pageInfoSearch, pageInfoTransaction]);
-
-  React.useEffect(() => {
-    if (isInitialMount2.current) {
-      isInitialMount2.current = false;
-    } else {
-      dispatchSearch();
-    }
-  }, [query]);
 
   React.useEffect(() => {
     let queryNew = {};
@@ -169,8 +44,16 @@ export default function PaginationHook({adminPage = false}) {
         limit,
       };
     }
-    searchPage(queryNew);
+    editQuery(queryNew);
   }, [limit]);
+
+  React.useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      dispatchSearch();
+    }
+  }, [query]);
 
   React.useEffect(() => {
     const allpage = [...Array(pageInfo.pages).keys()].map((option) => {
@@ -189,7 +72,7 @@ export default function PaginationHook({adminPage = false}) {
       ...query,
       page: e.value,
     };
-    searchPage(newQuery);
+    editQuery(newQuery);
   };
 
   const getArrLink = () => {
@@ -206,14 +89,12 @@ export default function PaginationHook({adminPage = false}) {
         } else {
           item = [
             item,
-            `${
-              process.env.REACT_APP_URL_BACKEND +
-              extension +
-              qs.stringify({
-                ...query,
-                ...{page: item},
-              })
-            }`,
+            `${`${
+              process.env.REACT_APP_URL_BACKEND + backendExtension
+            }?${qs.stringify({
+              ...query,
+              ...{page: item},
+            })}`}`,
           ];
         }
         return item;
@@ -237,7 +118,7 @@ export default function PaginationHook({adminPage = false}) {
     };
     console.log('ini query dari pageKlik');
     console.log(queryPage);
-    searchPage(queryPage);
+    editQuery(queryPage);
   };
 
   const getMid = () => {
@@ -290,7 +171,7 @@ export default function PaginationHook({adminPage = false}) {
                 onClick={(e) => handlePageClick(1, e)}
                 href={`${
                   process.env.REACT_APP_URL_BACKEND +
-                  extension +
+                  backendExtension +
                   qs.stringify({
                     ...query,
                     page: 1,
@@ -345,7 +226,7 @@ export default function PaginationHook({adminPage = false}) {
                 onClick={(e) => handlePageClick(pageInfo.pages, e)}
                 href={`${
                   process.env.REACT_APP_URL_BACKEND +
-                  extension +
+                  backendExtension +
                   qs.stringify({
                     ...query,
                     limit,

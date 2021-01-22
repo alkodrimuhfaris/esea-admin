@@ -10,6 +10,9 @@ export default {
     type: 'GET_PRODUCT_DETAILS',
     payload: services().get(`products/${id}`),
   }),
+  clearProductDetails: () => ({
+    type: 'CLEAR_PRODUCT_DETAILS',
+  }),
   createProduct: (token, data = {}) => ({
     type: 'CREATE_PRODUCT',
     payload: services(token).post('products/', qs.stringify(data)),
