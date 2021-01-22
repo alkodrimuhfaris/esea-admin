@@ -14,6 +14,7 @@ import ModalLoading from '../Modal/ModalLoading';
 import ModalConfirm from '../Modal/ModalConfirm';
 import PaginationHook from '../HelperComponents/Pagination';
 import NewProduct from './NewProduct';
+import EditProduct from './EditProduct';
 // import Pagination from '../HelperComponents/Pagination';
 
 export default function Products() {
@@ -26,6 +27,7 @@ export default function Products() {
   const dataProducts = useSelector((state) => state.getAllProducts.data);
   const pageInfo = useSelector((state) => state.getAllProducts.pageInfo);
   const query = useSelector((state) => state.querySearch.query);
+  const deleteProduct = useSelector((state) => state.deleteProduct);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openProductEdit, setOpenProductEdit] = React.useState(false);
   const [search, setSearch] = React.useState('');
@@ -68,13 +70,30 @@ export default function Products() {
     }
   }, [getAllCategories.pending]);
 
+  React.useEffect(() => {
+    if (deleteProduct.success || deleteProduct.error) {
+      setPropsAlert({
+        title: deleteProduct.success ? 'Success!' : 'Failed!',
+        content: deleteProduct.message,
+        useOneBtn: true,
+        confirm: () => {
+          dispatch(actions.productActions.clearDeleteMessage());
+          setOpenAlert(false);
+        },
+      });
+      setOpenAlert(true);
+    }
+  }, [deleteProduct]);
+
   const commitFilter = (e) => {
     e.preventDefault();
     const date = {before, after};
     const queryNew = {
       ...query,
       date,
-      data: {categoryId: selectedCategory.value},
+      data: selectedCategory.value
+        ? {categoryId: selectedCategory.value}
+        : undefined,
       sort: Object.keys(sort).length ? sort.value.sort : undefined,
     };
     dispatch(actions.querySearchActions.querySearch(queryNew));
@@ -103,7 +122,7 @@ export default function Products() {
     dispatch(actions.productActions.getAllProducts(qry));
   };
 
-  const deleteProduct = (id) => {
+  const doDeleteProduct = (id) => {
     setPropsAlert({
       title: 'Warning',
       content: 'Are you sure want to delete the product?',
@@ -127,126 +146,139 @@ export default function Products() {
   return (
     <div className="py-3">
       <NewProduct modalOpen={openCreate} setModalOpen={setOpenCreate} />
-      <ModalLoading modalOpen={getAllProducts.pending} />
+      <EditProduct
+        modalOpen={openProductEdit}
+        setModalOpen={setOpenProductEdit}
+      />
+      <ModalLoading
+        modalOpen={getAllProducts.pending || deleteProduct.pending}
+      />
       <ModalConfirm modalOpen={openAlert} {...propsAlert} />
-      <Row form onSubmit={doSearch} className="row no-gutters">
-        <Col
-          xs="2"
-          className="d-flex justify-content-center align-items-center"
-        >
-          <Button
-            onClick={() => setOpenCreate(true)}
-            color="esea-main"
-            className="square-1p5-em-padding rounded-circle position-relative"
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          doSearch();
+        }}
+      >
+        <Row className="row no-gutters">
+          <Col
+            xs="2"
+            className="d-flex justify-content-center align-items-center"
           >
-            <BiLayerPlus className="absolute-centering" />
-          </Button>
-        </Col>
-        <Col xs="7" className="pr-3">
-          <Input
-            onChange={(e) => setSearch(e.target.value)}
-            value={search}
-            color="esea-main"
-            className="rounded-pill"
-            placeholder="Search product here"
-          />
-        </Col>
-        <Col
-          xs="3"
-          className="d-flex justify-content-center align-items-center"
-        >
-          <div
-            className="position-absolute"
-            style={{
-              zIndex: 3,
-              top: '50%',
-              left: xs || sm ? '10%' : '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
+            <Button
+              onClick={() => setOpenCreate(true)}
+              color="esea-main"
+              className="square-1p5-em-padding rounded-circle position-relative"
+            >
+              <BiLayerPlus className="absolute-centering" />
+            </Button>
+          </Col>
+          <Col xs="7" className="pr-3">
+            <Input
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              color="esea-main"
+              className="rounded-pill"
+              placeholder="Search product here"
+            />
+          </Col>
+          <Col
+            xs="3"
+            className="d-flex justify-content-center align-items-center"
           >
             <div
-              className="my-3 position-relative"
-              style={{display: 'inline-block'}}
+              className="position-absolute"
+              style={{
+                zIndex: 3,
+                top: '50%',
+                left: xs || sm ? '10%' : '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
             >
-              <Button
-                type="button"
-                id="filterBtn"
-                name="filterBtn"
-                onClick={() => setFilterPopOver((prevState) => !prevState)}
-                outline
-                color="esea-main"
-                className={`btn-popover ${
-                  sm ? 'btn-popover-md' : 'btn-popover-lg'
-                }`}
+              <div
+                className="my-3 position-relative"
+                style={{display: 'inline-block'}}
               >
-                <FiFilter
-                  size={sm ? '0.75em' : '1em'}
-                  className="filter-icon"
-                />
-              </Button>
-              <Popover isOpen={filterPopOver}>
-                <div className="pt-2 px-2 bg-white">
-                  <Form>
-                    <Label for="dataKey">Categories</Label>
-                    <Select
-                      id="dataKey"
-                      className="mb-4"
-                      value={selectedCategory}
-                      options={categoryOption}
-                      onChange={(e) => setSelectedCategory(e)}
-                    />
-                    <Label for="sortKey">Sort By</Label>
-                    <Select
-                      id="sortKey"
-                      className="mb-4"
-                      value={sort}
-                      options={sortOption}
-                      onChange={(e) => setSort(e)}
-                    />
-                    <FormGroup>
-                      <Label for="filterDateFrom">From Date</Label>
-                      <Input
-                        type="date"
-                        name="dateFromVal"
-                        id="filterDateFrom"
-                        value={after}
-                        onChange={(e) => setAfter(e.target.value)}
+                <Button
+                  type="button"
+                  id="filterBtn"
+                  name="filterBtn"
+                  onClick={() => setFilterPopOver((prevState) => !prevState)}
+                  outline
+                  color="esea-main"
+                  className={`btn-popover ${
+                    sm ? 'btn-popover-md' : 'btn-popover-lg'
+                  }`}
+                >
+                  <FiFilter
+                    size={sm ? '0.75em' : '1em'}
+                    className="filter-icon"
+                  />
+                </Button>
+                <Popover isOpen={filterPopOver}>
+                  <div className="pt-2 px-2 bg-white">
+                    <Form>
+                      <Label for="dataKey">Categories</Label>
+                      <Select
+                        id="dataKey"
+                        className="mb-4"
+                        value={selectedCategory}
+                        options={categoryOption}
+                        onChange={(e) => setSelectedCategory(e)}
                       />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label for="filterDateTo">To Date</Label>
-                      <Input
-                        type="date"
-                        name="dateToVal"
-                        id="filterDateTo"
-                        value={before}
-                        onChange={(e) => setBefore(e.target.value)}
+                      <Label for="sortKey">Sort By</Label>
+                      <Select
+                        id="sortKey"
+                        className="mb-4"
+                        value={sort}
+                        options={sortOption}
+                        onChange={(e) => setSort(e)}
                       />
-                      <div className="d-flex justify-content-between">
-                        <Button
-                          color="esea-main"
-                          className="my-3 mr-1"
-                          onClick={commitFilter}
-                        >
-                          Apply
-                        </Button>
-                        <Button
-                          outline
-                          color="danger"
-                          className="ml-1 my-3"
-                          onClick={handleDefault}
-                        >
-                          Abort All
-                        </Button>
-                      </div>
-                    </FormGroup>
-                  </Form>
-                </div>
-              </Popover>
+                      <FormGroup>
+                        <Label for="filterDateFrom">From Date</Label>
+                        <Input
+                          type="date"
+                          name="dateFromVal"
+                          id="filterDateFrom"
+                          value={after}
+                          onChange={(e) => setAfter(e.target.value)}
+                        />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label for="filterDateTo">To Date</Label>
+                        <Input
+                          type="date"
+                          name="dateToVal"
+                          id="filterDateTo"
+                          value={before}
+                          onChange={(e) => setBefore(e.target.value)}
+                        />
+                        <div className="d-flex justify-content-between">
+                          <Button
+                            color="esea-main"
+                            className="my-3 mr-1"
+                            onClick={commitFilter}
+                          >
+                            Apply
+                          </Button>
+                          <Button
+                            outline
+                            color="danger"
+                            className="ml-1 my-3"
+                            onClick={handleDefault}
+                          >
+                            Abort All
+                          </Button>
+                        </div>
+                      </FormGroup>
+                    </Form>
+                  </div>
+                </Popover>
+              </div>
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Form>
       <Row className="mt-3 no-gutters">
         <Col
           xs="1"
@@ -291,19 +323,26 @@ export default function Products() {
             item={item}
             page={page}
             openDetailProduct={openDetailProduct}
-            deleteProduct={deleteProduct}
+            deleteProduct={doDeleteProduct}
           />
         );
       })}
-      <PaginationHook
-        query={query}
-        dispatchSearchQuery={dispatchSearch}
-        editQuery={(qry) =>
-          dispatch(actions.querySearchActions.querySearch(qry))
-        }
-        pageInfo={pageInfo}
-        backendExtension="products"
-      />
+      <div className="position-relative">
+        <div
+          className="position-absolute mb-5 w-100"
+          style={{left: '50%', transform: 'translate(-50%, 0)', zIndex: 1}}
+        >
+          <PaginationHook
+            query={query}
+            dispatchSearchQuery={dispatchSearch}
+            editQuery={(qry) =>
+              dispatch(actions.querySearchActions.querySearch(qry))
+            }
+            pageInfo={pageInfo}
+            backendExtension="products"
+          />
+        </div>
+      </div>
     </div>
   );
 }

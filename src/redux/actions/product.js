@@ -15,11 +15,11 @@ export default {
   }),
   createProduct: (token, data = {}) => ({
     type: 'CREATE_PRODUCT',
-    payload: services(token).post('products/', qs.stringify(data)),
+    payload: services(token).post('products/', data),
   }),
   updateProduct: (token, id, data = {}) => ({
     type: 'UPDATE_PRODUCT',
-    payload: services(token).patch(`products/${id}`, qs.stringify(data)),
+    payload: services(token).patch(`products/${id}`, data),
   }),
   deleteProduct: (token, id) => ({
     type: 'DELETE_PRODUCT_DETAILS',

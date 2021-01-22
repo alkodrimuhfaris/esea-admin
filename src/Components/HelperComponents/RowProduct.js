@@ -26,9 +26,13 @@ export default function RowProduct({
         xs="1"
         className="d-flex align-items-center justify-content-center border"
       >
-        <div>
+        <div
+          className="text-center"
+          style={{
+            lineHeight: xs || sm ? '0.625em' : '0.9em',
+          }}
+        >
           <text
-            className="text-center"
             style={{
               fontSize: xs || sm ? '0.5em' : '0.75em',
             }}
@@ -42,9 +46,13 @@ export default function RowProduct({
         sm="4"
         className="d-flex align-items-center justify-content-center border px-2 py-3"
       >
-        <div>
+        <div
+          className="text-center"
+          style={{
+            lineHeight: xs || sm ? '0.625em' : '0.9em',
+          }}
+        >
           <text
-            className="text-center"
             style={{
               fontSize: xs || sm ? '0.5em' : '0.75em',
             }}
@@ -57,9 +65,13 @@ export default function RowProduct({
         xs="2"
         className="d-flex align-items-center justify-content-center border px-2 py-3"
       >
-        <div>
+        <div
+          className="text-center"
+          style={{
+            lineHeight: xs || sm ? '0.625em' : '0.9em',
+          }}
+        >
           <text
-            className="text-center"
             style={{
               fontSize: xs || sm ? '0.5em' : '0.75em',
             }}
@@ -72,7 +84,12 @@ export default function RowProduct({
         xs="3"
         className="d-flex align-items-center justify-content-center border px-2 py-3"
       >
-        <div>
+        <div
+          className="text-center"
+          style={{
+            lineHeight: xs || sm ? '0.625em' : '0.9em',
+          }}
+        >
           <text
             className="text-center"
             style={{

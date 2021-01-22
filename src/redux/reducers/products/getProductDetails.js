@@ -3,7 +3,9 @@ const initialState = {
   error: false,
   pending: false,
   message: '',
-  data: {},
+  data: {
+    category: {},
+  },
 };
 
 export default (state = initialState, action) => {
