@@ -86,7 +86,7 @@ export default function Profile() {
   useEffect(() => {
     setAvatar({
       uriAvatar: user.avatar
-        ? `${process.env.REACT_APP_URL_BACKEND}/${user.avatar}`
+        ? `${process.env.REACT_APP_URL_BACKEND}${user.avatar}`
         : placeholder,
       fromDB: true,
       file: {},
