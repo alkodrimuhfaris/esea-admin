@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e4cd42a5.chunk.css",
+    "main.js": "/static/js/main.d1408c56.chunk.js",
+    "main.js.map": "/static/js/main.d1408c56.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.2044ee1e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.2044ee1e.js.map",
+    "static/js/2.99ca2ff6.chunk.js": "/static/js/2.99ca2ff6.chunk.js",
+    "static/js/2.99ca2ff6.chunk.js.map": "/static/js/2.99ca2ff6.chunk.js.map",
+    "static/js/3.ebda5280.chunk.js": "/static/js/3.ebda5280.chunk.js",
+    "static/js/3.ebda5280.chunk.js.map": "/static/js/3.ebda5280.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/main.e4cd42a5.chunk.css.map": "/static/css/main.e4cd42a5.chunk.css.map",
+    "static/js/2.99ca2ff6.chunk.js.LICENSE.txt": "/static/js/2.99ca2ff6.chunk.js.LICENSE.txt",
+    "static/media/fisherMan.deb4c652.jpg": "/static/media/fisherMan.deb4c652.jpg",
+    "static/media/profile.d8ba7d75.jpg": "/static/media/profile.d8ba7d75.jpg",
+    "static/media/signupBackground.b000ad9d.png": "/static/media/signupBackground.b000ad9d.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2044ee1e.js",
+    "static/js/2.99ca2ff6.chunk.js",
+    "static/css/main.e4cd42a5.chunk.css",
+    "static/js/main.d1408c56.chunk.js"
+  ]
+}
