@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import {
@@ -79,9 +80,19 @@ export default function DetailRegistrator({modalOpen = false, setModalOpen}) {
                         <text className="text-scondary">{key}</text>
                       </Col>
                       <Col xs="8" sm="10">
-                        <text>
-                          <strong>{value}</strong>
-                        </text>
+                        {key === 'Phone' ? (
+                          <a href={`tel:${value}`}>
+                            <strong>{value}</strong>
+                          </a>
+                        ) : key === 'Email' ? (
+                          <a href={`mailto:${value}`}>
+                            <strong>{value}</strong>
+                          </a>
+                        ) : (
+                          <text>
+                            <strong>{value}</strong>
+                          </text>
+                        )}
                       </Col>
                     </Row>
                   );

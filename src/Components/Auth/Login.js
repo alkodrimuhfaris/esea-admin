@@ -43,7 +43,6 @@ export default function Login({location = {state: ''}}) {
     const {state} = location;
     const path = state ? state.from.pathname : '/admin';
     if (auth.isLogin) {
-      console.log(path);
       history.push(path);
     }
   }, [auth.isLogin]);

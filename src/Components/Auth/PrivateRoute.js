@@ -3,10 +3,6 @@ import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 class PrivateRoute extends Component {
-  componentDidMount() {
-    console.log(this.props.location);
-  }
-
   render() {
     return (
       <Route
@@ -21,7 +17,6 @@ class PrivateRoute extends Component {
             },
           );
           if (this.props.auth.isLogin) {
-            console.log('cek dulu apakah masuk private route berulang')
             return childWithProps;
           }
           return (

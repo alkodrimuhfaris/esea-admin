@@ -8,7 +8,6 @@ import PrivateRoute from './Components/Auth/PrivateRoute';
 import Admin from './Components/Admin/Admin';
 import Login from './Components/Auth/Login';
 import Signup from './Components/Auth/SignUp';
-import Home from './Components/Home/Home';
 
 import './App.css';
 
@@ -51,19 +50,6 @@ class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Redirect from="/" to="/admin" exact />
-            {/* <Route
-              path="/"
-              render={(props) => (
-                <>
-                  <Helmet>
-                    <meta charSet="utf-8" />
-                    <title>Home Admin || Tuku!</title>
-                  </Helmet>
-                  <Home {...props} />
-                </>
-              )}
-              exact
-            /> */}
             <PrivateRoute path="/admin">
               <>
                 <Helmet>
