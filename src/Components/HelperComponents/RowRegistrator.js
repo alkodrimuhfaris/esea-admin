@@ -72,13 +72,14 @@ export default function RowRegistrator({
             lineHeight: xs || sm ? '0.625em' : '0.9em',
           }}
         >
-          <text
+          <a
+            href={`tel:${item.phone}`}
             style={{
               fontSize: xs || sm ? '0.5em' : '0.75em',
             }}
           >
             {item.phone}
-          </text>
+          </a>
         </div>
         <div
           className="text-center w-100"
@@ -86,13 +87,14 @@ export default function RowRegistrator({
             lineHeight: xs || sm ? '0.625em' : '0.9em',
           }}
         >
-          <text
+          <a
+            href={`mailto:${item.email}`}
             style={{
               fontSize: xs || sm ? '0.5em' : '0.75em',
             }}
           >
             {item.email}
-          </text>
+          </a>
         </div>
       </Col>
       <Col
