@@ -25,10 +25,6 @@ export default function PaginationHook({
   };
 
   React.useEffect(() => {
-    console.log(query);
-  }, [query]);
-
-  React.useEffect(() => {
     let queryNew = {};
     if (limit === '-') {
       queryNew = {
