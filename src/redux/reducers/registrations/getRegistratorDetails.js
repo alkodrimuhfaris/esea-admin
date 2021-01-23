@@ -3,8 +3,7 @@ const initialState = {
   error: false,
   pending: false,
   message: '',
-  data: [],
-  pageInfo: {},
+  data: {},
 };
 
 export default (state = initialState, action) => {
@@ -12,16 +11,16 @@ export default (state = initialState, action) => {
     default: {
       return state;
     }
-    case 'GET_ALL_REGISTRATOR_PENDING': {
+    case 'GET_REGISTRATOR_DETAILS_PENDING': {
       return {
         ...state,
         success: false,
         error: false,
         pending: true,
-        message: 'Getting registrator data...',
+        message: 'Getting product details ...',
       };
     }
-    case 'GET_ALL_REGISTRATOR_REJECTED': {
+    case 'GET_REGISTRATOR_DETAILS_REJECTED': {
       return {
         ...state,
         success: false,
@@ -30,15 +29,14 @@ export default (state = initialState, action) => {
         message: action.payload.response.data.message,
       };
     }
-    case 'GET_ALL_REGISTRATOR_FULFILLED': {
+    case 'GET_REGISTRATOR_DETAILS_FULFILLED': {
       return {
         ...state,
         success: true,
         error: false,
         pending: false,
         message: 'Success get data',
-        data: action.payload.data.results,
-        pageInfo: action.payload.data.pageInfo,
+        data: action.payload.data.result,
       };
     }
     case 'CLEAR_GET_REGISTRATOR_MESSAGE': {

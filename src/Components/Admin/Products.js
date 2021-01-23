@@ -43,7 +43,7 @@ export default function Products() {
   ]);
   const [sort, setSort] = React.useState({
     value: {sort: {createdAt: 'DESC'}},
-    label: 'Newest',
+    label: 'Terbaru',
   });
   const [before, setBefore] = React.useState('');
   const [after, setAfter] = React.useState('');
@@ -79,6 +79,9 @@ export default function Products() {
         confirm: () => {
           dispatch(actions.productActions.clearDeleteMessage());
           setOpenAlert(false);
+          if (deleteProduct.success) {
+            dispatch(actions.productActions.getAllProducts(query));
+          }
         },
       });
       setOpenAlert(true);
@@ -107,7 +110,7 @@ export default function Products() {
     });
     setSort({
       value: {sort: {createdAt: 'DESC'}},
-      label: 'Newest',
+      label: 'Terbaru',
     });
     setBefore('');
     setAfter('');
@@ -314,14 +317,14 @@ export default function Products() {
         </Col>
       </Row>
       {dataProducts.map((item, index) => {
-        const page =
+        const numberRow =
           pageInfo.dataPerPage === '-'
             ? index + 1
             : index + 1 + pageInfo.dataPerPage * (pageInfo.currentPage - 1);
         return (
           <RowProduct
             item={item}
-            page={page}
+            numberRow={numberRow}
             openDetailProduct={openDetailProduct}
             deleteProduct={doDeleteProduct}
           />

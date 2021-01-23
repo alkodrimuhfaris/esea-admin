@@ -22,7 +22,7 @@ export default {
     payload: services(token).patch(`products/${id}`, data),
   }),
   deleteProduct: (token, id) => ({
-    type: 'DELETE_PRODUCT_DETAILS',
+    type: 'DELETE_PRODUCT',
     payload: services(token).delete(`products/${id}`),
   }),
   clearCreateMessage: () => ({

@@ -10,6 +10,7 @@ import deleteProduct from './products/deleteProduct';
 // registrations
 import getAllRegistrator from './registrations/getAllRegistrator';
 import deleteRegistrator from './registrations/deleteRegistrator';
+import getRegistratorDetails from './registrations/getRegistratorDetails';
 
 // categories
 import getAllCategories from './categories/getAllCategories';
@@ -45,6 +46,7 @@ export default combineReducers({
 
   getAllRegistrator,
   deleteRegistrator,
+  getRegistratorDetails,
 
   getAllCategories,
 

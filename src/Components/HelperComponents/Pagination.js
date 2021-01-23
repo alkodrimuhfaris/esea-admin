@@ -8,8 +8,8 @@ import useWindowDimension from '../../Helpers/useWindowDimension';
 export default function PaginationHook({
   query,
   pageInfo,
-  editQuery = (qry) => console.log(qry),
-  dispatchSearchQuery = (qry) => console.log(qry),
+  editQuery = (qry) => qry,
+  dispatchSearchQuery = (qry) => qry,
   backendExtension,
 }) {
   const {sm} = useWindowDimension();
@@ -23,6 +23,10 @@ export default function PaginationHook({
     dispatchSearchQuery(query);
     history.push({search: qs.stringify(query)});
   };
+
+  React.useEffect(() => {
+    console.log(query);
+  }, [query]);
 
   React.useEffect(() => {
     let queryNew = {};
@@ -79,7 +83,6 @@ export default function PaginationHook({
     let link = [];
     if (Object.keys(pageInfo).length) {
       const {currentPage} = pageInfo;
-      console.log('change page');
       for (let i = currentPage - 2; i <= currentPage + 2; i++) {
         link.push(i);
       }
@@ -99,7 +102,6 @@ export default function PaginationHook({
         }
         return item;
       });
-      console.log(link);
     } else {
       link = [];
     }
@@ -108,16 +110,11 @@ export default function PaginationHook({
 
   const handlePageClick = (page, key) => {
     key.preventDefault();
-    console.log(key.target.href);
-    console.log(page);
-    console.log(limit);
     const queryPage = {
       ...query,
       page,
       limit,
     };
-    console.log('ini query dari pageKlik');
-    console.log(queryPage);
     editQuery(queryPage);
   };
 
